@@ -187,3 +187,54 @@ def HU_2_2_actualizar_estado_cita(id_medico):
     else:
         print("Opción no válida.")
 #------------------------------------------------------
+# --- Funcionalidades del Recepcionista / Administrador ---
+
+def HU_3_2_gestionar_horarios():
+    print("\n--- Gestión de Horarios ---")
+    for m in doctores:
+        print(f"ID: {m['id']}, Nombre: {m['nombre']}")
+
+    try:
+        id_medico = int(input("Ingrese ID del médico: ").strip())
+    except ValueError:
+        print("ID inválido.")
+        return
+
+    medico = next((m for m in doctores if m["id"] == id_medico), None)
+    if not medico:
+        print("Médico no encontrado.")
+        return
+
+    print("Horarios actuales:")
+    for h in medico["horarios"]:
+        print(f"- {h['dia']}: {h['inicio']} - {h['fin']}")
+
+    dia = input("Nuevo día: ").capitalize()
+    inicio = input("Hora inicio (HH:MM): ").strip()
+    fin = input("Hora fin (HH:MM): ").strip()
+
+    try:
+        i = datetime.datetime.strptime(inicio, "%H:%M")
+        f = datetime.datetime.strptime(fin, "%H:%M")
+        if i >= f:
+            print("Error: hora inválida.")
+            return
+    except ValueError:
+        print("Formato incorrecto.")
+        return
+
+    medico["horarios"].append({"dia": dia, "inicio": inicio, "fin": fin})
+    print("Horario agregado con éxito.")
+
+
+def HU_3_1_enviar_recordatorios_automaticos():
+    print("\n--- Envío de Recordatorios ---")
+    fecha_manana = (datetime.date.today() + timedelta(days=1)).strftime("%Y-%m-%d")
+
+    for c in citas:
+        if c["fecha"] == fecha_manana and c["estado"] == "Programada":
+            contacto = obtener_contacto_paciente(c["id_paciente"])
+            if contacto:
+                print(f"Recordatorio enviado a {contacto} para cita con {obtener_nombre_medico(c['id_medico'])} a las {c['hora']}.")
+            else:
+                print(f"No se pudo enviar recordatorio para cita {c['id']}, sin contacto.")

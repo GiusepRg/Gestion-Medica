@@ -34,6 +34,46 @@ citas = [
 
 id_proxima_cita = 3  # Para autoincrementar el ID de nuevas citas
 
+import datetime
+from datetime import timedelta
+
+# --- Simulación de Base de Datos ---
+doctores = [...]
+pacientes = [...]
+citas = [...]
+id_proxima_cita = 3
+
+# --- Funciones Auxiliares ---
+
+def obtener_nombre_paciente(id_paciente):
+    """Busca el nombre de un paciente por su ID."""
+    for p in pacientes:
+        if p["id"] == id_paciente:
+            return p["nombre"]
+    return "Desconocido"
+
+def obtener_nombre_medico(id_medico):
+    """Busca el nombre de un médico por su ID."""
+    for m in doctores:
+        if m["id"] == id_medico:
+            return m["nombre"]
+    return "Desconocido"
+
+def obtener_contacto_paciente(id_paciente):
+    """Busca el contacto de un paciente por su ID."""
+    for p in pacientes:
+        if p["id"] == id_paciente:
+            return p["contacto"]
+    return None
+
+def formato_fecha_a_dia_semana(fecha_str):
+    """Convierte una fecha 'YYYY-MM-DD' al nombre del día de la semana en español."""
+    try:
+        fecha_obj = datetime.datetime.strptime(fecha_str, "%Y-%m-%d").date()
+        dias = ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado", "Domingo"]
+        return dias[fecha_obj.weekday()]
+    except ValueError:
+        return None
 
 #------------------------------------------------------
 # --- Funcionalidades del Paciente ---
@@ -290,5 +330,5 @@ def main():
             print("Opción no válida.")
 
 
-if _name_ == "_main_":
+if __name__ == "_main_":
     main()

@@ -238,3 +238,57 @@ def HU_3_1_enviar_recordatorios_automaticos():
                 print(f"Recordatorio enviado a {contacto} para cita con {obtener_nombre_medico(c['id_medico'])} a las {c['hora']}.")
             else:
                 print(f"No se pudo enviar recordatorio para cita {c['id']}, sin contacto.")
+# --- Menú Principal ---
+
+def main():
+    while True:
+        print("\n===== Sistema de Gestión Médica =====")
+        print("1. Paciente")
+        print("2. Médico")
+        print("3. Recepcionista / Admin")
+        print("4. Enviar recordatorios")
+        print("5. Salir")
+
+        opcion = input("Seleccione una opción: ").strip()
+
+        if opcion == '1':
+            while True:
+                print("\n--- Portal del Paciente ---")
+                print("1. Buscar médicos")
+                print("2. Reservar cita")
+                print("3. Volver")
+                sub = input("Opción: ")
+                if sub == '1':
+                    HU_1_2_buscar_medicos_disponibles()
+                elif sub == '2':
+                    HU_1_1_reservar_cita()
+                elif sub == '3':
+                    break
+
+        elif opcion == '2':
+            menu_medico()
+
+        elif opcion == '3':
+            while True:
+                print("\n--- Portal Administración ---")
+                print("1. Gestionar horarios")
+                print("2. Volver")
+                sub = input("Opción: ")
+                if sub == '1':
+                    HU_3_2_gestionar_horarios()
+                elif sub == '2':
+                    break
+
+        elif opcion == '4':
+            HU_3_1_enviar_recordatorios_automaticos()
+
+        elif opcion == '5':
+            print("Saliendo del sistema...")
+            break
+
+        else:
+            print("Opción no válida.")
+
+
+if _name_ == "_main_":
+    main()
